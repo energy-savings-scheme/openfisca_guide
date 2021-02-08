@@ -280,6 +280,14 @@ So an example of a test, using our coolness_factor variable defined in the logic
 
 I'd recommend all of the tests for a particular variable live in their own YAML file, i.e. coolness_factor.yaml, for your ease of use.
 
+Running 
+
+```
+make test
+```
+
+In your terminal will run whatever yaml tests are contained in the "tests" folder. It will fail if there is no tests folder, or if there are no yamls in the test folder. 
+
 ## Frequently Asked Questions
 
 You will probably have lots of questions about how to use OpenFISCA - maybe you hit a bug when you try to run a test. Let me know and I'll include them here :)
