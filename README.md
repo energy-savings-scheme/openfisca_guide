@@ -4,11 +4,11 @@
 
 Welcome to the DPIE ESS Rules as Code Wiki!
 
-This is a policy maker's personal wiki for implementing Rules as Code for the Energy Security Safeguard. 
+This is a policy maker's personal wiki for implementing Rules as Code for the Energy Security Safeguard. It is intended for a policy maker who has never written Python or even code before, and goes into detail about how to do so.
 
 This repository is a work in progress.
 
-I wrote this in Hundred Rabbits' Left. They do AWESOME work. Check them out.
+I wrote this in [Hundred Rabbits' Left.](https://100r.co/site/left.html) They do AWESOME work. Check them out.
 
 ## What is OpenFISCA?
 
@@ -16,19 +16,21 @@ OpenFISCA is a open-source platform used to write rules as code. It was initiall
 
 We are one of the first organisations/departments to use it for purposes other than calculating tax - we use it to codify the Energy Savings Scheme Rule, and intend to use it to code the Energy Security Safeguard rules (incl. both the energy efficiency and peak demand response sides of the rules.) 
 
-OpenFISCA is built off Python and thus can we used for the deployment of web apps and services much like vanilla Python, Numpy, Pandas, BeautifulSoup etc. 
+OpenFISCA is built off Python and thus can be used for the deployment of web apps and services much like vanilla Python, Numpy, Pandas, BeautifulSoup etc. Of course, it can also integrate functions in from other Python libraries (and other languages, if you're good enough to do so.)
 
-The NSW Department of Customer Service has currently delivered a live community gaming instance of rules as code, using OpenFISCA. Read more here. https://www.nsw.gov.au/media-releases/digitising-rules-of-government-to-make-compliance-easy
+More info on OpenFISCA can be found [here.](https://openfisca.org/)
+
+The NSW Department of Customer Service has currently delivered a live community gaming instance of rules as code, using OpenFISCA. [Read more here.] (https://www.nsw.gov.au/media-releases/digitising-rules-of-government-to-make-compliance-easy)
 
 ## Installation of OpenFISCA
 
-I wrote up a beginner's guide for installing OpenFISCA on your machine, using Docker Desktop, last year. You can find it here. 
+I wrote up a beginner's guide for installing OpenFISCA on your machine, using Docker Desktop, last year. You can find it [here.](https://github.com/liamdmccann/openfisca_windows_tutorial) 
 
 This is most useful if you're going to be a regular user of OpenFISCA. 
 
 If you're going to be an occasional user, or mostly want to experiment, you might find it more useful to use repl.it - it's a lightweight, browser based platform that can show off the power of rules as code without the technical commitment. 
 
-I wrote up a guide for how to use repl.it for OpenFISCA too! You can find it here.
+I wrote up a guide for how to use repl.it for OpenFISCA too! You can find it [here.](https://github.com/liamdmccann/openfisca_windows_tutorial)
 
 # Variables 
 
@@ -85,7 +87,7 @@ def formula(buildings, period, parameters):
         return 0
 ```
 
-This won't work in OpenFISCA. The reason why it won't work is because OpenFISCA is build on arrays, rather than scalar values. So, my understanding is you can throw a file with 100,000 test cases at OpenFISCA, and it'll calculate the result (almost) as fast as if it was calculating a single test. 
+This won't work in OpenFISCA. The reason why it won't work is because OpenFISCA is built on arrays, rather than scalar values. So, my understanding is you can throw a file with 100,000 test cases at OpenFISCA, and it'll calculate the result (almost) as fast as if it was calculating a single test. 
 
 However, this changes how you write your logical structures. 
 
@@ -156,7 +158,7 @@ Parameters could be considered the constants of your legislation - values which 
 
 For example, within the context of the Energy Savings Scheme, all of the Electricity Savings within an implementation are multiplied by 1.06 to get the number of Energy Savings Certificates for an implementation. In OpenFISCA, you can represent this easily in a parameter - see below!
 
-'''
+```
 description: The Electricity Certificate Conversion Factor, applied to the Electricity Savings
   created through any Recognised Energy Savings Activity.
 reference: Equation 1 of the ESS Rule 2020, located in Clause 6.5 of the Energy
@@ -165,7 +167,7 @@ reference: Equation 1 of the ESS Rule 2020, located in Clause 6.5 of the Energy
 values:
   2020-01-01:
     value: 1.06
-'''
+```
 
 You can then assign this parameter to a variable like below:
 
@@ -177,7 +179,7 @@ Easy!
 
 Of course, you can do something more complex. Let's say you want to have both the electricity conversion and gas conversion factors in the same file. You'd write it something like this. 
 
-'''
+```
 description: The Electricity Certificate Conversion Factor, applied to the Electricity Savings
   created through any Recognised Energy Savings Activity, and the Gas Certificate Conversion   Factor, applied to the Gas Savings created through any Recognised Energy Savings   Activity,
 reference: Equation 1 of the ESS Rule 2020, located in Clause 6.5 of the Energy
@@ -191,7 +193,7 @@ gas_conversion_factor:
   values:
     2020-01-01:
       value: 0.39
-'''
+```
 
 And then you can refer to specifically the electricity_conversion_factor by doing this: 
 
@@ -257,8 +259,27 @@ The syntax for a test is below:
   period: 2020 # the period of time the test is being conducted for 
   absolute_error_margin: how far out the result can be for the test to still pass, in   terms of a value. i.e. absolute_error_margin of 10 means a result can be 110 or 90,   and still pass if the intended result is 100 [optional]
   relative_error_margin: how far out the result can be for the test to still pass, in   terms of a percentage. i.e. absolute_error_margin of 10 means a result can be 10%   out [optional]
+  input: 
+    variable_one:
+    variable_two:
+  output:
+    variable_three:
 ```
 
+So an example of a test, using our coolness_factor variable defined in the logical conditions section: 
+
+``` 
+- name: Determine the coolness factor for someone who only plays tennis.
+  period: 2021
+  input:
+    plays_tennis: True
+    plays_football: False
+  output:
+    coolness_factor: 500
+```
+
+I'd recommend all of the tests for a particular variable live in their own YAML file, i.e. coolness_factor.yaml, for your ease of use.
 
 ## Frequently Asked Questions
 
+You will probably have lots of questions about how to use OpenFISCA - maybe you hit a bug when you try to run a test. Let me know and I'll include them here :)
