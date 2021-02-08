@@ -1,10 +1,10 @@
-# Rules as Code Wiki
+# DPIE OpenFISCA Wiki
 
 ## Welcome
 
-Welcome to the DPIE ESS Rules as Code Wiki!
+Welcome to the DPIE Energy Security Safeguard OpenFISCA Wiki!
 
-This is a policy maker's personal wiki for implementing Rules as Code for the Energy Security Safeguard. It is intended for a policy maker who has never written Python or even code before, and goes into detail about how to do so.
+This is a policy maker's personal wiki for implementing Rules as Code for the Energy Security Safeguard, using OpenFISCA. It is intended for a policy maker who has never written Python or even code before, and goes into detail about how to do so.
 
 This repository is a work in progress.
 
