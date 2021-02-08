@@ -20,7 +20,7 @@ OpenFISCA is built off Python and thus can be used for the deployment of web app
 
 More info on OpenFISCA can be found [here.](https://openfisca.org/)
 
-The NSW Department of Customer Service has currently delivered a live community gaming instance of rules as code, using OpenFISCA. [Read more here.] (https://www.nsw.gov.au/media-releases/digitising-rules-of-government-to-make-compliance-easy)
+The NSW Department of Customer Service has currently delivered a live community gaming instance of rules as code, using OpenFISCA. [Read more here.](https://www.nsw.gov.au/media-releases/digitising-rules-of-government-to-make-compliance-easy)
 
 ## Installation of OpenFISCA
 
