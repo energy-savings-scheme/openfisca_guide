@@ -258,7 +258,7 @@ The syntax for a test is below:
 - name: 'Text string for the name of the test.'
   period: 2020 # the period of time the test is being conducted for 
   absolute_error_margin: how far out the result can be for the test to still pass, in   terms of a value. i.e. absolute_error_margin of 10 means a result can be 110 or 90,   and still pass if the intended result is 100 [optional]
-  relative_error_margin: how far out the result can be for the test to still pass, in   terms of a percentage. i.e. absolute_error_margin of 10 means a result can be 10%   out [optional]
+  relative_error_margin: how far out the result can be for the test to still pass, in   terms of a percentage. i.e. relative_error_margin of 10 means a result can be 10% out [optional]
   input: 
     variable_one:
     variable_two:
