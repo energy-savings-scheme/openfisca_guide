@@ -79,12 +79,11 @@ If you've written anything in Python in the past, you're probably familiar with 
 
 ```
 NOTE THIS IS NOT A VALID OPENFISCA FORMULA
-def formula(buildings, period, parameters):
-    energy_savings = buildings('energy_savings', period)
+annual_salary = 500
     if salary < 1000:
-        return 200
+        return "salary is under $1000"
     else:
-        return 0
+        return "salary is $1000 or above"
 ```
 
 This won't work in OpenFISCA. The reason why it won't work is because OpenFISCA is built on arrays, rather than scalar values. So, my understanding is you can throw a file with 100,000 test cases at OpenFISCA, and it'll calculate the result (almost) as fast as if it was calculating a single test. 
@@ -94,28 +93,35 @@ However, this changes how you write your logical structures.
 The way you'd write the above formula, is something like this:
 
 ```
-def formula(buildings, period, parameters):
-    condition_energy_savings = buildings('energy_savings', period) < 1000
-    return energy_savings * 200
+
+class is_salary_1000_or_above(Variable):
+    value_type = bool
+    etc etc
+    
+
+    def formula(buildings, period, parameters):
+        salary = buildings('salary_value', period)
+        condition_salary_above_1000 = (salary < 1000)
+        return condition_salary_above_1000
 ```
 
-What happens in this case is for every case where condition_energy_savings is True (i.e. the value for energy_savings is less than 1000), it'll assign the value 1 to condition_energy_savings. If it's False (i.e. more than 1000), it'll assign the value 0 to condition_energy_savings. 
+What happens in this case is for every case where condition_salary_above_1000 is True (i.e. the value for salary is less than 1000), it'll assign the value 1 to condition_salary_1000_or_above. If it's False (i.e. 1000), it'll assign the value 0 to condition_salary_1000_or_above. Because it's then returning that variable, it means the overall variable, "is_salary_1000_or_above", will be True or False depending on what that value is. 
 
 This means you can then use the Numpy function where to handle these test cases:
 
 ```
 def formula(buildings, period, parameters):
-    condition_energy_savings = buildings('energy_savings', period) < 1000
-    return where(condition_energy_savings, 1000, 200)
+    condition_energy_savings = buildings('salary_value', period) >= 1000
+    return where(condition_energy_savings, "salary is $1000 or above", "salary is less than $1000")
 ```
 
-So in this example, if condition_energy_savings is True, it'll return the value 1000 - if it's False, it'll return 200. Easy!
+So in this example, if condition_energy_savings is True, it'll return the text string "salary is $1000 or above" - if it's False, it'll return "salary is less than $1000". Easy!
 
 Of course, you can do lots of interesting things with these condition structures. Below is a short list, demoed through examples:
 
 - condition_is_gas_saving_activity = (gas_saved_more_than_zero * activity_uses_gas) - using * in this formula means that both gas_saved_more_than_zero AND activity_uses_gas must be True for is_gas_saving_activity to be True (you can't multiply by zero)
 
-- condition_has_facial_hair = (has_moustache + has_beard) - using + in this formula means that either has_moustache or has_beard must be true for the condition has_facial_hair to be true 
+- condition_has_facial_hair = (has_moustache + has_beard) - using + in this formula means that either has_moustache or has_beard must be true for the condition has_facial_hair to be true. Booleans work as 0 or 1 (false or true) - if you go highrr than 1 it'll just assign the value of 1.
 
 - condition is_in_europe = not(is_in_america) - you can use not() to return a negation of a value. If a location is in America it can't be in Europe, so if is_in_america is True, is_in_europe will always be False. (US Army Bases don't count.) 
 
